@@ -82,7 +82,10 @@ The visualizations are generated numerically using:
 ```text
 .
 ├── src/                # Python source code
-├── assets/             # Generated plots and videos
+├── src/main.py         # main.py
+├── src/helium          # modules
+├── output/plots        # Generated plots
+├── output/videos       # Generated videos
 ├── notebooks/          # Optional exploratory notebooks
 ├── requirements.txt
 └── README.md
