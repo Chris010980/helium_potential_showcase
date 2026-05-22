@@ -9,11 +9,13 @@ from pathlib import Path
 
 from helium.grid import create_grid
 from helium.model import potential
-from helium.plotting import plot_1d_potential, plot_2d_potential
+from helium.plotting import apply_plot_style, plot_1d_potential, plot_2d_potential
 
 
 def main() -> None:
     """Create the grid, compute potentials, and save the plots."""
+    apply_plot_style()
+
     x, y, X, Y = create_grid()
 
     z = 0.0
@@ -26,7 +28,7 @@ def main() -> None:
     pot_ref = potential(X, Y, z, x2_inf, y2, z2, ZC)
     pot = potential(X, Y, z, x2, y2, z2, ZC)
 
-    output_dir = Path('output/plots')
+    output_dir = Path('../output/plots')
     output_dir.mkdir(parents=True, exist_ok=True)
 
     plot_1d_potential(
