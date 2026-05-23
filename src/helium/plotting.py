@@ -8,6 +8,7 @@ from __future__ import annotations
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+from pathlib import Path
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
@@ -119,3 +120,88 @@ def plot_2d_potential(
     _configure_axes(ax, x_label, y_label, xlim, ylim, grid=False)
     fig.savefig(output_path, dpi=200)
     plt.close(fig)
+
+
+def plot_1d_slice(
+    x: np.ndarray,
+    pot_ref: np.ndarray,
+    pot: np.ndarray,
+    electron_distance: float,
+    output_dir: str | Path,
+    y_index: int | None = None,
+) -> Path:
+    """Generate and save a representative 1D potential slice.
+
+    Parameters
+    ----------
+    x, pot_ref, pot : arrays
+        Coordinate array and potential arrays.
+    electron_distance : float
+        Position of the fixed electron in Ångströms.
+    output_dir : str or Path
+        Directory to save the plot.
+    y_index : int, optional
+        Index for the y-coordinate slice. If None, uses the middle.
+
+    Returns
+    -------
+    Path
+        Path to the generated plot file.
+    """
+    if y_index is None:
+        y_index = len(pot) // 2
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    filename = f"1D_slice_x2_{electron_distance:.2f}.png"
+    output_path = output_dir / filename
+
+    plot_1d_potential(
+        x,
+        pot_ref,
+        pot,
+        y_index=y_index,
+        output_path=str(output_path),
+    )
+
+    return output_path
+
+
+def plot_2d_field(
+    X: np.ndarray,
+    Y: np.ndarray,
+    pot: np.ndarray,
+    electron_distance: float,
+    output_dir: str | Path,
+) -> Path:
+    """Generate and save a representative 2D potential field.
+
+    Parameters
+    ----------
+    X, Y, pot : arrays
+        Coordinate grids and potential array.
+    electron_distance : float
+        Position of the fixed electron in Ångströms.
+    output_dir : str or Path
+        Directory to save the plot.
+
+    Returns
+    -------
+    Path
+        Path to the generated plot file.
+    """
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    filename = f"2D_field_x2_{electron_distance:.2f}.png"
+    output_path = output_dir / filename
+
+    plot_2d_potential(
+        X,
+        Y,
+        pot,
+        output_path=str(output_path),
+    )
+
+    return output_path
