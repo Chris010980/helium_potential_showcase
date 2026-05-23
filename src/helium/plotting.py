@@ -8,6 +8,7 @@ from __future__ import annotations
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 def apply_plot_style() -> None:
@@ -83,8 +84,8 @@ def plot_2d_potential(
     xlim: tuple[float, float] = (-10.0, 10.0),
     ylim: tuple[float, float] = (-10.0, 10.0),
 ) -> None:
-    """Generate and save a 2D potential colormap plot."""
-    fig, ax = plt.subplots()
+    """Generate and save a 2D potential colormap plot with equal aspect ratio."""
+    fig, ax = plt.subplots(figsize=(9.5, 4.9))
     pcm = ax.pcolormesh(
         X,
         Y,
@@ -94,7 +95,14 @@ def plot_2d_potential(
         vmax=vmax,
         shading='auto',
     )
-    cbar = fig.colorbar(pcm, ax=ax, fraction=0.046, pad=0.04)
+    
+    # Enforce equal aspect ratio (1:1 scaling for x and y axes)
+    ax.set_aspect('equal', adjustable='box')
+    
+    # Use make_axes_locatable for better colorbar placement
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes('right', size='3.5%', pad=0.05)
+    cbar = fig.colorbar(pcm, cax=cax)
     cbar.set_label('Potential energy (a.u.)', fontsize=10, color='0.3')
     cbar.ax.tick_params(colors='0.3', labelsize=9)
     cbar.outline.set_edgecolor('0.6')
