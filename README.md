@@ -43,7 +43,7 @@ $$
 where
 
 - $ \mathbf{r} $ denotes the position of the observed electron
-- $ \mathbf{r}_2 $ is the fixed position of the second electron
+- \( \mathbf{r}_2 \) is the fixed position of the second electron
 - $ Z $ is the nuclear charge
 
 The first term describes the attractive Coulomb interaction between the electron
