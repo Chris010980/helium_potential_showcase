@@ -24,7 +24,7 @@ The project includes:
 
 ## Physical Model
 
-The helium atom consists of a nucleus with charge $ Z = 2 $ and two interacting
+The helium atom consists of a nucleus with charge $Z=2$ and two interacting
 electrons. In contrast to the hydrogen atom, the electronic motion can no longer
 be separated analytically because the Coulomb interaction between the electrons
 introduces coupling terms into the Schrödinger equation.
