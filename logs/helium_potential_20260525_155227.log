@@ -1,0 +1,5 @@
+2026-05-25 15:52:27 INFO __main__: Logging started. Log file: /home/christian/Projekte/HTML/GithubPages/Python_Projects/helium_potential/logs/helium_potential_20260525_155227.log
+2026-05-25 15:52:29 INFO helium.plotting: Saved 1D potential plot to ../output/plots/1D_slice_x2_2.50.png
+2026-05-25 15:52:29 INFO __main__: 1D slice plot saved: ../output/plots/1D_slice_x2_2.50.png
+2026-05-25 15:52:29 INFO helium.plotting: Saved 2D potential plot to ../output/plots/2D_field_x2_2.50.png
+2026-05-25 15:52:29 INFO __main__: 2D field plot saved: ../output/plots/2D_field_x2_2.50.png
