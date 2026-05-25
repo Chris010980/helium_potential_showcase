@@ -59,11 +59,14 @@ def plot_1d_potential(
     y_label: str = 'Potential energy (a.u.)',
     xlim: tuple[float, float] = (-10.0, 10.0),
     ylim: tuple[float, float] = (-5.0, 5.0),
+    title: str | None = None,
 ) -> None:
     """Generate and save a 1D potential comparison plot."""
     fig, ax = plt.subplots()
     ax.plot(x, pot_ref[:, y_index], label=r'$-2/r$', color='tab:red')
     ax.plot(x, pot[:, y_index], label=r'$-2/r + 1/r_2$', color='tab:blue')
+    if title is not None:
+        ax.set_title(title, pad=8)
     _configure_axes(ax, x_label, y_label, xlim, ylim, grid=True, grid_alpha=0.2)
     ax.legend(loc='upper left')
     fig.savefig(output_path, dpi=200)
@@ -84,6 +87,7 @@ def plot_2d_potential(
     y_label: str = r'$y$ ($\AA$)',
     xlim: tuple[float, float] = (-10.0, 10.0),
     ylim: tuple[float, float] = (-10.0, 10.0),
+    title: str | None = None,
 ) -> None:
     """Generate and save a 2D potential colormap plot with equal aspect ratio."""
     fig, ax = plt.subplots(figsize=(9.5, 4.9))
@@ -117,6 +121,8 @@ def plot_2d_potential(
         linewidths=0.8,
     )
     ax.clabel(contours, inline=True, fontsize=8)
+    if title is not None:
+        ax.set_title(title, pad=8)
     _configure_axes(ax, x_label, y_label, xlim, ylim, grid=False)
     fig.savefig(output_path, dpi=200)
     plt.close(fig)
@@ -149,7 +155,7 @@ def plot_1d_slice(
         Path to the generated plot file.
     """
     if y_index is None:
-        y_index = len(pot) // 2
+        y_index = pot.shape[1] // 2
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
