@@ -5,11 +5,14 @@
 
 from __future__ import annotations
 
+import logging
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+logger = logging.getLogger(__name__)
 
 
 def apply_plot_style() -> None:
@@ -30,6 +33,7 @@ def apply_plot_style() -> None:
         "grid.color": "0.6",
         "savefig.bbox": "tight",
     })
+    logger.debug('Applied consistent plot style settings.')
 
 
 def _configure_axes(
@@ -70,6 +74,7 @@ def plot_1d_potential(
     _configure_axes(ax, x_label, y_label, xlim, ylim, grid=True, grid_alpha=0.2)
     ax.legend(loc='upper left')
     fig.savefig(output_path, dpi=200)
+    logger.info('Saved 1D potential plot to %s', output_path)
     plt.close(fig)
 
 
@@ -125,6 +130,7 @@ def plot_2d_potential(
         ax.set_title(title, pad=8)
     _configure_axes(ax, x_label, y_label, xlim, ylim, grid=False)
     fig.savefig(output_path, dpi=200)
+    logger.info('Saved 2D potential plot to %s', output_path)
     plt.close(fig)
 
 

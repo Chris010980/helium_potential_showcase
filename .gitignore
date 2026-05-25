@@ -1,4 +1,4 @@
-./Figures/
+Figures/
 
 *.zip
 
@@ -6,6 +6,6 @@
 
 .venv/
 
-./output/frames/
+output/frames/
 
-./output_*/
+output_*/

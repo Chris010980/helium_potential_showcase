@@ -5,7 +5,10 @@
 
 from __future__ import annotations
 
+import logging
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 
 def create_grid(
@@ -36,4 +39,10 @@ def create_grid(
     x = np.arange(x_min, x_max, x_step)
     y = np.arange(y_min, y_max, y_step)
     X, Y = np.meshgrid(x, y, indexing=indexing)
+    logger.debug(
+        'Created grid with x shape %s, y shape %s, indexing=%s',
+        x.shape,
+        y.shape,
+        indexing,
+    )
     return x, y, X, Y

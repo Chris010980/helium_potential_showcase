@@ -6,6 +6,8 @@
 from __future__ import annotations
 
 import argparse
+import logging
+from datetime import datetime
 from pathlib import Path
 
 from helium.animation import (
@@ -83,7 +85,45 @@ def parse_arguments() -> argparse.Namespace:
         action='store_true',
         help='Create zip archives for generated frame directories.',
     )
+    parser.add_argument(
+        '--framerate',
+        type=int,
+        default=20,
+        help='Framerate for created MP4 videos (default: 20).',
+    )
+    parser.add_argument(
+        '--log-level',
+        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
+        default='INFO',
+        help='Logging level for console and file output (default: INFO).',
+    )
     return parser.parse_args()
+
+
+def configure_logging(log_dir: Path, level: int = logging.INFO) -> Path:
+    """Configure root logging and return the created log file path."""
+    log_dir.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    log_path = log_dir / f'helium_potential_{timestamp}.log'
+
+    formatter = logging.Formatter(
+        '%(asctime)s %(levelname)s %(name)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+    )
+
+    file_handler = logging.FileHandler(log_path, encoding='utf-8')
+    file_handler.setFormatter(formatter)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+
+    root_logger = logging.getLogger()
+    root_logger.setLevel(level)
+    root_logger.handlers.clear()
+    root_logger.addHandler(file_handler)
+    root_logger.addHandler(console_handler)
+
+    return log_path
 
 
 def main(
@@ -96,6 +136,7 @@ def main(
     frames_only: bool = False,
     keep_frames: bool = False,
     zip_frames_flag: bool = False,
+    framerate: int = 20,
 ) -> None:
     """Create static plots or animation frames and videos.
 
@@ -119,7 +160,11 @@ def main(
         Keep frame PNGs after video creation.
     zip_frames_flag : bool
         Create zip archives for frame directories.
+    framerate : int
+        Target framerate for MP4 video creation.
     """
+    logger = logging.getLogger(__name__)
+
     if animate and frames_only:
         raise ValueError('Cannot use --animate and --frames-only together.')
 
@@ -154,7 +199,7 @@ def main(
                 output_dir=plots_dir,
                 y_index=pot_1d.shape[1] // 2,
             )
-            print(f"1D slice plot saved: {plot_1d_path}")
+            logger.info('1D slice plot saved: %s', plot_1d_path)
 
         if plot_type in ('2d', 'both'):
             pot_2d = potential(X, Y, z, electron_distance_2d, y2, z2, ZC)
@@ -165,7 +210,7 @@ def main(
                 electron_distance=electron_distance_2d,
                 output_dir=plots_dir,
             )
-            print(f"2D field plot saved: {plot_2d_path}")
+            logger.info('2D field plot saved: %s', plot_2d_path)
         return
 
     frames_dir = output_base / 'frames'
@@ -189,16 +234,17 @@ def main(
             one_d_dir,
             y_index=pot_ref.shape[1] // 2,
         )
-        print(f"1D animation frames generated: {len(one_d_paths)} files in {one_d_dir}")
+        logger.info('1D animation frames generated: %d files in %s', len(one_d_paths), one_d_dir)
         if animate:
             video_path = create_video(
                 one_d_dir,
                 videos_dir / f'1D_animation',
+                framerate=framerate,
             )
-            print(f"1D video created: {video_path}")
+            logger.info('1D video created: %s', video_path)
         if zip_frames_flag:
             zip_path = zip_frames(one_d_dir, one_d_dir.parent / '1d_frames')
-            print(f"1D frame archive created: {zip_path}")
+            logger.info('1D frame archive created: %s', zip_path)
         if not keep_frames and (animate or zip_frames_flag):
             cleanup_frames(one_d_dir)
 
@@ -213,22 +259,28 @@ def main(
             distances,
             two_d_dir,
         )
-        print(f"2D animation frames generated: {len(two_d_paths)} files in {two_d_dir}")
+        logger.info('2D animation frames generated: %d files in %s', len(two_d_paths), two_d_dir)
         if animate:
             video_path = create_video(
                 two_d_dir,
                 videos_dir / f'2D_animation',
+                framerate=framerate,
             )
-            print(f"2D video created: {video_path}")
+            logger.info('2D video created: %s', video_path)
         if zip_frames_flag:
             zip_path = zip_frames(two_d_dir, two_d_dir.parent / '2d_frames')
-            print(f"2D frame archive created: {zip_path}")
+            logger.info('2D frame archive created: %s', zip_path)
         if not keep_frames and (animate or zip_frames_flag):
             cleanup_frames(two_d_dir)
 
 
 if __name__ == '__main__':
     args = parse_arguments()
+    project_root = Path(__file__).resolve().parents[1]
+    log_dir = project_root / 'logs'
+    log_path = configure_logging(log_dir, level=getattr(logging, args.log_level))
+    logging.getLogger(__name__).info('Logging started. Log file: %s', log_path)
+
     main(
         plot_type=args.plot_type,
         electron_distance=args.electron_distance,
@@ -239,4 +291,5 @@ if __name__ == '__main__':
         frames_only=args.frames_only or args.no_animation,
         keep_frames=args.keep_frames,
         zip_frames_flag=args.zip_frames,
+        framerate=args.framerate,
     )
