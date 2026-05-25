@@ -6,6 +6,6 @@
 
 .venv/
 
-./output*/frames/
+./output/frames/
 
 ./output_*/
