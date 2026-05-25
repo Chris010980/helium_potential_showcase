@@ -1,6 +1,9 @@
 ./Figures/
+
 *.zip
 
 .idea/
 
 .venv/
+
+./output*/frames/

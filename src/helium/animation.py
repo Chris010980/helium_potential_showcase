@@ -60,7 +60,7 @@ def generate_1d_frames(
     for index, x2 in enumerate(electron_distances):
         pot = potential(X, Y, z, x2, y2, z2, ZC)
         output_path = frame_dir / f'frame_{index:04d}.png'
-        title = rf'1D potential, fixed electron at {x2:.2f} $	ext{{Å}}$'
+        title = rf'1D potential, fixed electron at {x2:.2f} Å'
         plot_1d_potential(
             x,
             pot_ref,
@@ -91,7 +91,7 @@ def generate_2d_frames(
     for index, x2 in enumerate(electron_distances):
         pot = potential(X, Y, z, x2, y2, z2, ZC)
         output_path = frame_dir / f'frame_{index:04d}.png'
-        title = rf'2D potential, fixed electron at {x2:.2f} $	ext{{Å}}$'
+        title = rf'2D potential, fixed electron at {x2:.2f} Å'
         plot_2d_potential(
             X,
             Y,
@@ -117,6 +117,7 @@ def create_video(
         '-y',
         '-framerate', str(framerate),
         '-i', str(frames_dir / pattern),
+        '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2',
         '-c:v', 'libx264',
         '-pix_fmt', 'yuv420p',
         str(output_path),
