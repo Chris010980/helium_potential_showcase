@@ -35,16 +35,13 @@ while the potential experienced by the second electron is evaluated.
 
 The effective potential is given by
 
-$$
-V(\mathbf{r}) = -\frac{Z}{|\mathbf{r}|}
-+ \frac{1}{|\mathbf{r} - \mathbf{r}_2|}
-$$
+$$V(\mathbf{r}) = -\frac{Z}{|\mathbf{r}|}+\frac{1}{|\mathbf{r}-\mathbf{r}_2|}$$
 
 where
 
-- $ \mathbf{r} $ denotes the position of the observed electron
-- $ \mathbf{r}_2 $ is the fixed position of the second electron
-- $ Z $ is the nuclear charge
+- $\mathbf{r}$ denotes the position of the observed electron
+- $\mathbf{r}_2$ is the fixed position of the second electron
+- $Z$ is the nuclear charge
 
 The first term describes the attractive Coulomb interaction between the electron
 and the nucleus, while the second term represents the repulsive interaction
