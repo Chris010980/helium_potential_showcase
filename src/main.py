@@ -23,6 +23,15 @@ from helium.grid import create_grid
 from helium.model import potential
 from helium.plotting import apply_plot_style, plot_1d_slice, plot_2d_field
 
+# ---------------------------------------------------------------------
+# Project paths
+# ---------------------------------------------------------------------
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+DEFAULT_OUTPUT_DIR = PROJECT_ROOT / 'output'
+DEFAULT_LOG_DIR = PROJECT_ROOT / 'logs'
+
 
 def parse_arguments() -> argparse.Namespace:
     """Parse command line arguments."""
@@ -57,8 +66,8 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         '--output-dir',
         type=Path,
-        default=Path('../output'),
-        help='Base output directory for plots, frames, and videos (default: ../output).',
+        default=None,
+        help='Base output directory for plots, frames, and videos (default: <project_root>/output).',
     )
     parser.add_argument(
         '--animate',
@@ -131,7 +140,7 @@ def main(
     electron_distance: float = 2.5,
     electron_distance_1d: float | None = None,
     electron_distance_2d: float | None = None,
-    output_dir: Path = Path('../output'),
+    output_dir: Path | None = None,
     animate: bool = False,
     frames_only: bool = False,
     keep_frames: bool = False,
@@ -150,8 +159,8 @@ def main(
         Distance for the 1D plot.
     electron_distance_2d : float | None
         Distance for the 2D plot.
-    output_dir : Path
-        Base directory for plots, frames, and videos.
+    output_dir : Path | None
+        Base directory for plots, frames, and videos. If None, defaults to <project_root>/output.
     animate : bool
         Create animation videos from generated frames.
     frames_only : bool
@@ -164,6 +173,9 @@ def main(
         Target framerate for MP4 video creation.
     """
     logger = logging.getLogger(__name__)
+
+    if output_dir is None:
+        output_dir = DEFAULT_OUTPUT_DIR
 
     if animate and frames_only:
         raise ValueError('Cannot use --animate and --frames-only together.')
@@ -213,7 +225,6 @@ def main(
             logger.info('2D field plot saved: %s', plot_2d_path)
         return
 
-    frames_dir = output_base / 'frames'
     videos_dir = output_base / 'videos'
     videos_dir.mkdir(parents=True, exist_ok=True)
     one_d_dir, two_d_dir = ensure_frame_directories(output_base)
@@ -276,8 +287,7 @@ def main(
 
 if __name__ == '__main__':
     args = parse_arguments()
-    project_root = Path(__file__).resolve().parents[1]
-    log_dir = project_root / 'logs'
+    log_dir = DEFAULT_LOG_DIR
     log_path = configure_logging(log_dir, level=getattr(logging, args.log_level))
     logging.getLogger(__name__).info('Logging started. Log file: %s', log_path)
 

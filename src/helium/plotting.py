@@ -166,7 +166,7 @@ def plot_1d_slice(
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    filename = f"1D_slice_x2_{electron_distance:.2f}.png"
+    filename = f"1D-Pot_{electron_distance:.2f}.png"
     output_path = output_dir / filename
 
     plot_1d_potential(
@@ -206,7 +206,7 @@ def plot_2d_field(
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    filename = f"2D_field_x2_{electron_distance:.2f}.png"
+    filename = f"2D-Pot_{electron_distance:.2f}.png"
     output_path = output_dir / filename
 
     plot_2d_potential(
