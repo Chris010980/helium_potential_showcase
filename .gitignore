@@ -7,3 +7,5 @@
 .venv/
 
 ./output*/frames/
+
+./output_*/
