@@ -4,7 +4,7 @@ Visualization of the effective electron potential in the helium atom using a red
 
 ## Overview
 
-The helium atom is the simplest multi-electron atomic system in which
+The helium atom (He) is the simplest multi-electron atomic system in which
 electron–electron interaction plays an essential role. Unlike the hydrogen atom,
 the Schrödinger equation can no longer be solved analytically in closed form
 due to the Coulomb repulsion between the two electrons.
