@@ -24,21 +24,61 @@ The project includes:
 
 ## Physical Model
 
-The effective potential is modeled as
+The helium atom consists of a nucleus with charge $ Z = 2 $ and two interacting
+electrons. In contrast to the hydrogen atom, the electronic motion can no longer
+be separated analytically because the Coulomb interaction between the electrons
+introduces coupling terms into the Schrödinger equation.
 
-:contentReference[oaicite:0]{index=0}
+To visualize the structure of the interaction, this project uses a simplified
+effective one-electron picture in which the position of one electron is fixed
+while the potential experienced by the second electron is evaluated.
 
-where:
+The effective potential is given by
 
-- \( Z \) is the nuclear charge
-- \( r \) is the position of the observed electron
-- \( r_2 \) is the fixed position of the second electron
+$$
+V(\mathbf{r}) = -\frac{Z}{|\mathbf{r}|}
++ \frac{1}{|\mathbf{r} - \mathbf{r}_2|}
+$$
 
-The first term describes the attractive Coulomb interaction with the nucleus,
-while the second term represents electron–electron repulsion.
+where
 
-This simplified model allows the structure of the interaction potential to be
-studied directly in coordinate space.
+- $ \mathbf{r} $ denotes the position of the observed electron
+- $ \mathbf{r}_2 $ is the fixed position of the second electron
+- $ Z $ is the nuclear charge
+
+The first term describes the attractive Coulomb interaction between the electron
+and the nucleus, while the second term represents the repulsive interaction
+between the two electrons.
+
+Although this model does not represent the full correlated helium wavefunction,
+it provides an intuitive real-space picture of electron–electron interaction
+effects.
+
+### Screening Effects
+
+The visualizations demonstrate how the second electron partially screens the
+nuclear charge.
+
+When the second electron is far away from the nucleus, the effective potential
+approaches the hydrogen-like Coulomb potential. As the second electron moves
+closer to the nucleus, the repulsive interaction increasingly distorts the
+potential landscape experienced by the first electron.
+
+This behavior illustrates the physical origin of screening in multi-electron
+atoms.
+
+### Relation to More Advanced Methods
+
+The simplified effective potential serves as a conceptual starting point for
+more sophisticated approaches to correlated atomic systems, including:
+
+- Hylleraas-type wavefunctions with explicit correlation terms
+- variational calculations of the helium ground state
+- numerical studies of the electron–electron cusp condition
+- correlated two-electron wavefunction models
+
+These methods explicitly incorporate electron correlation beyond the fixed-electron
+approximation used in this visualization.
 
 ---
 
